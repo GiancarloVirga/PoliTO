@@ -1,0 +1,36 @@
+
+\documentclass[12pt]{article}
+\begin{document}
+
+
+
+\section{Application Structure}
+Our application consist of an APK (Android Package) and is made up of a series of component: 
+\itemize{
+	\item	Activity
+	\item	Service
+	\item	Content Provider
+	\item 	Broadcast Reciver
+}
+\subsection{Activity}
+An single activity is related to a single task that a user can perform in the application. Activity can lauch other activity (nowadays almost all application have single activity)
+\subsection{Service}
+Services are used to request data from the internet. In modern android as soon our application isn't on the screen anymore, the services related to this app have a timeout and is forced to be closed or to be promoted to foreground service(publish an icon in the top bar, so the user can be aware of the service's execution)
+An other special Service is the Background task execution, the schedule of this task is scheduled by the OS and is performed when CPU load is low.
+\subsection{Content Provider}
+The content Provider is used to provide to the application information coming form other applications (eg: select a photo that is stored in our phone in the instagramm app). 
+\subsection{BroadcastReciver}
+Collect system events and run code to provide solutions (for example if internet connection is low or memory is almost full)
+
+
+\subsection{}
+
+\section{}
+
+\section{}
+
+\section{}
+
+\section{}
+
+\end{document}
