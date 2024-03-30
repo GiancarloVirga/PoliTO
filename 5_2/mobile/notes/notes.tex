@@ -1,17 +1,33 @@
-
 \documentclass[12pt]{article}
 \begin{document}
 
 
+\section{Android Structure}
+Android is an open source platform, based on the linux kernel, supporting applications (mainly) written in kotlin or in Java, providing API in C++ and Rust. Additionally there are not any difference in native and third party application.
+The linux kernel acts as hardware abstraction layer (HAL) between hardware and software, managing:
+\begin{itemize}
+	\item Permission and security
+	\item Low level memory
+	\item Processes and threads
+	\item Network Layer
+	\item I/O, camera, memory, etc...
+\end{itemize}
+\textbf{Is important to notice that every applcation in Android runs in its own process, with its own instance of the virtual machine} (initially called Dalvik, now ART).\\
+Additionally the linux way to handle the users in a desktop machine, is used in Android, giving to each software maker the privileges for their own applications , included their own portion of memory and their own access to 'x' pieces of hw/sw, storing those information in the user's profile.\\
+The operating system is responsible to the schedule of the processes (remember: process = application running)
+The initialization of application is made up of a fork of the initial process. In this way is created a perfect copy, already initialized, of the virtual machine.\\
+\\Inserire .png slide a03.6
+\newpage
+
 
 \section{Application Structure}
 Our application consist of an APK (Android Package) and is made up of a series of component: 
-\itemize{
+\begin{itemize}
 	\item	Activity
 	\item	Service
 	\item	Content Provider
 	\item 	Broadcast Reciver
-}
+\end{itemize}
 \subsection{Activity}
 An single activity is related to a single task that a user can perform in the application. Activity can lauch other activity (nowadays almost all application have single activity)
 \subsection{Service}
@@ -21,16 +37,104 @@ An other special Service is the Background task execution, the schedule of this 
 The content Provider is used to provide to the application information coming form other applications (eg: select a photo that is stored in our phone in the instagramm app). 
 \subsection{BroadcastReciver}
 Collect system events and run code to provide solutions (for example if internet connection is low or memory is almost full)
+\newpage
 
 
-\subsection{}
+\section{Activity}
+\subsection{Applications opening}
+When an user tap on the application an "intent message" is sent to the OS and the Zygote system process is forked. An other "intent message" load the manifest file, used to create the application object. now the onCreate() method is used to load the GUI.\\
+\subsection{Activity: What does it do?}
+An activity is a software component that:\\
+\begin{itemize}
+	\item Take an input (eg: Lifecycle notification by OS, Interaction by the user, Acquires or releases resources)
+	\item Perform a single \textbf{specific} task.
+\end{itemize}
+Addittionally an activity may start another activity, by creating an \textbf{Intent} object (the called activity may be either part of the same application or may belong to a different one). 
+\subsection{Activity stack}
+For each task started, in the 'home' screen of the device, the operating system build an activity stack (initialized with the default acfivity). Each time a new task is started, this will be placed in the top of the stack, so the user can interact with it.\\
 
-\section{}
+inserire .png slide a04.8
 
-\section{}
+\subsection{Activity Lifecycle}
+Android send notifications to track the status of an application and its evolutipn according to user interaction, system-level events and resorces availability (the programmer has to react to these notification preforming actions that guarantee the correct management of all thee application resources).\\
 
-\section{}
+inserire .png slide a04.11
 
-\section{}
+\subsection{} The operating system creates the activity and manages its life cycle invoking some specific methods such as onCreate(), onStart(), onResume(), onStop(), onDestroy.\\
+
+\subsection{onCreate()}
+The method \verb|onCreate(b: Bundle?)| is called in two different cases:
+\begin{itemize}
+	\item When the activity is run for the first time (with empty Bundle parameter);
+	\item When the activity is launched again after being terminated by the operating system (Bundle parameter contains status informations).
+\end{itemize}
+Thisa methods is appropriate to perform most resource allocation, data initialization and GUI loading.\\
+Example:
+\begin{verbatim}
+class ExampleActivity: AppCompatActivity() {
+  
+  override fun onCreate(b: Bundle?) {
+
+    super.onCreate(b)
+
+    //Programmatically create and initialize a view
+    val tv = TextView(this)
+    tv.text = "Hello, Android!"
+    tv.gravity = Gravity.CENTER
+
+    //show the view content
+    set	ContentView(tv) 
+  }
+}
+\end{verbatim}
+
+\subsection{OnDestroy()}
+This method have the role of  terminate an activity, removing that activity from the memory. Invocation can come:
+\begin{itemize}
+	\item from the invocation of the \verb|finish(...)| method.
+	\item from the operating system to free resources (in this case the method \verb|isFinishing()| to distinguish between the two situation).
+\end{itemize}
+
+
+\section{GUI}
+\subsection{GUI preparation}
+GUI must be prepared in the onCreate(...) method, to make it visible;
+Two different approches are possible:
+\begin{itemize}
+	\item	Creating a set of View
+	\item	Invoking a set of @Composible
+\end{itemize}
+but anyway is modelled as a tree of widgets (The hierarchical structure of the tree reflects the usage of space inside the display. If a widget is a "child of" another widget, it is usually contained in the space of the parent one).
+\subsubsection{Modelling GUI as a set of objects}
+Android has been offering a set of classes aimed at modelling the widgets of the GUI (These classes are parts  of an inheritance hierarchy rooted at the \verb|android.view.View| class)\\
+The hierarchy is build according to the compisite pattern (organize object into a tree structure. Class \verb|android.view.View| represents any widget that may be bisplayed onto the screen. Its subclasses \verb|android.view.ViewGroup| represents the subset of View that may act as a visual container.).\\
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \end{document}
